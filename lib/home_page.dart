@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:to_do/add_page.dart';
+import 'package:to_do/edit_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -147,17 +148,16 @@ class _HomePageState extends State<HomePage> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5)),
                                 child: ListTile(
-                                  onTap: () async {
-                                    FirebaseFirestore.instance
-                                        .collection('tasks')
-                                        .doc(task.id)
-                                        .update({'status': true});
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                      return EditPage(taskId: task.id);
+                                    },));
                                   },
                                   onLongPress: () async {
                                     FirebaseFirestore.instance
                                         .collection('tasks')
                                         .doc(task.id)
-                                        .update({'status': false});
+                                        .update({'status': true});
                                   },
                                   leading: Container(
                                       width: 25,

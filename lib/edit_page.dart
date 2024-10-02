@@ -3,23 +3,47 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
-class AddTodo extends StatefulWidget {
-  AddTodo({super.key});
+class EditPage extends StatefulWidget {
+  final String taskId;
+  EditPage({super.key, required this.taskId});
 
   @override
-  State<AddTodo> createState() => _AddTodoState();
+  State<EditPage> createState() => _EditPageState();
 }
 
-class _AddTodoState extends State<AddTodo> {
-  final TextEditingController _taskController = TextEditingController();
-  final TextEditingController _descController = TextEditingController();
-  final TextEditingController _dateController = TextEditingController();
-  void testFirebase() async {
-    FirebaseFirestore.instance.collection('test').add({'name': 'Hy'});
+class _EditPageState extends State<EditPage> {
+  @override
+  initState() {
+    super.initState();
+    loadTask();
   }
+
+  TextEditingController _taskController = TextEditingController();
+  TextEditingController _descController = TextEditingController();
+  TextEditingController _dateController = TextEditingController();
+  String? _selectedValue;
+  String? _radioSelectedValue;
 
   final CollectionReference tasks =
       FirebaseFirestore.instance.collection('tasks');
+  Future<void> loadTask() async {
+    DocumentSnapshot taskSnapshot = await FirebaseFirestore.instance
+        .collection('tasks')
+        .doc(widget.taskId)
+        .get();
+
+    if (taskSnapshot.exists) {
+      Map<String, dynamic> taskData =
+          taskSnapshot.data() as Map<String, dynamic>;
+      setState(() {
+        _taskController.text = taskData['task'] ?? '';
+        _descController.text = taskData['desc'] ?? '';
+        _dateController.text = taskData['date'] ?? '';
+        _selectedValue = taskData['priority'] ?? '';
+        _radioSelectedValue = taskData['mode'] ?? '';
+      });
+    }
+  }
 
   Future<void> addTask() async {
     if (_taskController.text.isEmpty ||
@@ -31,7 +55,10 @@ class _AddTodoState extends State<AddTodo> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Incomplete',style: GoogleFonts.poppins(color: Colors.purple, fontSize: 15),),
+            title: Text(
+              'Incomplete',
+              style: GoogleFonts.poppins(color: Colors.purple, fontSize: 15),
+            ),
             content: Text(
               'Please fill all fields',
               style: GoogleFonts.poppins(color: Colors.black, fontSize: 15),
@@ -53,21 +80,28 @@ class _AddTodoState extends State<AddTodo> {
       return;
     }
 
-    return tasks
-        .add({
-          'task': _taskController.text,
-          'desc': _descController.text,
-          'date': _dateController.text,
-          'priority': _selectedValue,
-          'mode': _radioSelectedValue,
-          'status': _isCompleted
-        }).then((value) {
-          showDialog(context: context, builder: (context) {
-            return AlertDialog(
-              title: Text('Completed',style: GoogleFonts.poppins(color: Colors.purple, fontSize: 15),),
-              content: Text('Task added successfully',style: GoogleFonts.poppins(color: Colors.black, fontSize: 15),),
-              actions: <Widget>[
-                TextButton(
+    return tasks.add({
+      'task': _taskController.text,
+      'desc': _descController.text,
+      'date': _dateController.text,
+      'priority': _selectedValue,
+      'mode': _radioSelectedValue,
+      'status': _isCompleted
+    }).then((value) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'Completed',
+              style: GoogleFonts.poppins(color: Colors.purple, fontSize: 15),
+            ),
+            content: Text(
+              'Task added successfully',
+              style: GoogleFonts.poppins(color: Colors.black, fontSize: 15),
+            ),
+            actions: <Widget>[
+              TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                     _taskController.clear();
@@ -75,18 +109,17 @@ class _AddTodoState extends State<AddTodo> {
                     _dateController.clear();
                     _selectedValue = null;
                     _radioSelectedValue = null;
-                
                   },
                   child: Text(
                     'Ok',
                     style:
                         GoogleFonts.poppins(color: Colors.purple, fontSize: 20),
                   ))
-              ],
-            );
-          },);
-        });
-        
+            ],
+          );
+        },
+      );
+    });
   }
 
   Future<void> pickDate() async {
@@ -106,9 +139,52 @@ class _AddTodoState extends State<AddTodo> {
     'Less priority'
   ];
 
-  String? _selectedValue;
-  String? _radioSelectedValue;
   bool _isCompleted = false;
+  Future<void> editTask() async {
+    if (_taskController.text.isEmpty ||
+        _descController.text.isEmpty ||
+        _dateController.text.isEmpty ||
+        _selectedValue == null ||
+        _radioSelectedValue == null) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'Incomplete',
+              style: GoogleFonts.poppins(color: Colors.purple, fontSize: 15),
+            ),
+            content: Text(
+              'Please fill all fields',
+              style: GoogleFonts.poppins(color: Colors.black, fontSize: 15),
+            ),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    'Ok',
+                    style:
+                        GoogleFonts.poppins(color: Colors.purple, fontSize: 20),
+                  ))
+            ],
+          );
+        },
+      );
+      return;
+    }
+    return FirebaseFirestore.instance
+        .collection('tasks')
+        .doc(widget.taskId)
+        .update({
+      'task': _taskController.text,
+      'desc': _descController.text,
+      'date': _dateController.text,
+      'priority': _selectedValue,
+      'mode': _radioSelectedValue
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +195,7 @@ class _AddTodoState extends State<AddTodo> {
       title: Row(
         children: [
           Text(
-            'Add Task',
+            'Edit Task',
             style:
                 GoogleFonts.poppins(fontSize: 21, fontWeight: FontWeight.bold),
           ),
@@ -251,10 +327,47 @@ class _AddTodoState extends State<AddTodo> {
                   style:
                       ElevatedButton.styleFrom(backgroundColor: Colors.purple),
                   onPressed: () {
-                    addTask();
+                    if (_taskController.text.isEmpty ||
+                        _descController.text.isEmpty ||
+                        _dateController.text.isEmpty ||
+                        _selectedValue == null ||
+                        _radioSelectedValue == null) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text(
+                              'Incomplete',
+                              style: GoogleFonts.poppins(
+                                  color: Colors.purple, fontSize: 15),
+                            ),
+                            content: Text(
+                              'Please fill all fields',
+                              style: GoogleFonts.poppins(
+                                  color: Colors.black, fontSize: 15),
+                            ),
+                            actions: <Widget>[
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(
+                                    'Ok',
+                                    style: GoogleFonts.poppins(
+                                        color: Colors.purple, fontSize: 20),
+                                  ))
+                            ],
+                          );
+                        },
+                      );
+                      return;
+                    }
+                    editTask();
+
+                    Navigator.pop(context);
                   },
                   child: Text(
-                    'Add',
+                    'Edit',
                     style: GoogleFonts.poppins(color: Colors.white),
                   )),
             ),
