@@ -41,46 +41,46 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyARkoO-BzKsDonbRXjwi8r7dMxyW9N2XEA',
-    appId: '1:1069514788756:web:e32f095fce8007fad00981',
-    messagingSenderId: '1069514788756',
-    projectId: 'to-do-a37fc',
-    authDomain: 'to-do-a37fc.firebaseapp.com',
-    storageBucket: 'to-do-a37fc.appspot.com',
+    apiKey: 'AIzaSyBDaTsd1naqlxuvYukZggpfE7szRbqpcQk',
+    appId: '1:285982006243:web:e37581470d60f363045ed6',
+    messagingSenderId: '285982006243',
+    projectId: 'to-do-practice-bb05e',
+    authDomain: 'to-do-practice-bb05e.firebaseapp.com',
+    storageBucket: 'to-do-practice-bb05e.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAD-d5cX482vzeP-Tfj6ioB9O6WViPHRBc',
-    appId: '1:1069514788756:android:f123eec0ced922bdd00981',
-    messagingSenderId: '1069514788756',
-    projectId: 'to-do-a37fc',
-    storageBucket: 'to-do-a37fc.appspot.com',
+    apiKey: 'AIzaSyA2Qb03qkroEwE82pcFZiA0mGKwwGhNZiI',
+    appId: '1:285982006243:android:6300f34739a29c60045ed6',
+    messagingSenderId: '285982006243',
+    projectId: 'to-do-practice-bb05e',
+    storageBucket: 'to-do-practice-bb05e.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyADlSLuxFJ8ywNClN-_1ZaNaYQWwK5RI7I',
-    appId: '1:1069514788756:ios:d3b78448ce3577d1d00981',
-    messagingSenderId: '1069514788756',
-    projectId: 'to-do-a37fc',
-    storageBucket: 'to-do-a37fc.appspot.com',
-    iosBundleId: 'com.example.toDo',
+    apiKey: 'AIzaSyDxcp6nw_YMvIuUIJ7uHKjCilulG5iAY4I',
+    appId: '1:285982006243:ios:e33db2de2bd18e13045ed6',
+    messagingSenderId: '285982006243',
+    projectId: 'to-do-practice-bb05e',
+    storageBucket: 'to-do-practice-bb05e.appspot.com',
+    iosBundleId: 'com.example.toDoPractice',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyADlSLuxFJ8ywNClN-_1ZaNaYQWwK5RI7I',
-    appId: '1:1069514788756:ios:d3b78448ce3577d1d00981',
-    messagingSenderId: '1069514788756',
-    projectId: 'to-do-a37fc',
-    storageBucket: 'to-do-a37fc.appspot.com',
-    iosBundleId: 'com.example.toDo',
+    apiKey: 'AIzaSyDxcp6nw_YMvIuUIJ7uHKjCilulG5iAY4I',
+    appId: '1:285982006243:ios:e33db2de2bd18e13045ed6',
+    messagingSenderId: '285982006243',
+    projectId: 'to-do-practice-bb05e',
+    storageBucket: 'to-do-practice-bb05e.appspot.com',
+    iosBundleId: 'com.example.toDoPractice',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyARkoO-BzKsDonbRXjwi8r7dMxyW9N2XEA',
-    appId: '1:1069514788756:web:ccf01eb752341841d00981',
-    messagingSenderId: '1069514788756',
-    projectId: 'to-do-a37fc',
-    authDomain: 'to-do-a37fc.firebaseapp.com',
-    storageBucket: 'to-do-a37fc.appspot.com',
+    apiKey: 'AIzaSyBDaTsd1naqlxuvYukZggpfE7szRbqpcQk',
+    appId: '1:285982006243:web:c7d2c3bb1be16008045ed6',
+    messagingSenderId: '285982006243',
+    projectId: 'to-do-practice-bb05e',
+    authDomain: 'to-do-practice-bb05e.firebaseapp.com',
+    storageBucket: 'to-do-practice-bb05e.appspot.com',
   );
 }
